@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MART</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="cover not_found-cover">
+        <h1>
+            НЕТ ПОДКЛЮЧЕНИЯ
+        </h1>
+    </div>
+    <div class="cover working-cover">
+        <h1>
+            ПОДОЖДИТЕ, РАБОТАЕТ
+        </h1>
+    </div>
+    <div class="logo">
+            <div class="menu">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <h1>МАРТЫШКА</h1>
+    </div>
+    <div class="main">
+        <div class="menu_box info_text">
+            <ul class="timer_list">
+                <li class="item">
+                    <div class="set_box">
+                        <div class="no_timer_wrapper">
+                            <input type="radio" class="not_chosen" id="choose0" name="choose" checked>
+                            <label for="choose0">- без таймера</label>
+                        </div>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose1" name="choose" >
+                        <label for="choose1"> </label>
+                        <input type="text" class="name" id="name1" placeholder="имя">
+                        <label for="name1">-</label>
+                        <input type="number" class="timer_min" id="min1" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec1">:</label>
+                        <input type="number" class="timer_sec" id="sec1" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose2" name="choose" >
+                        <label for="choose2"> </label>
+                        <input type="text" class="name" id="name2" placeholder="имя">
+                        <label for="name3">-</label>
+                        <input type="number" class="timer_min" id="min2" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec2">:</label>
+                        <input type="number" class="timer_sec" id="sec2" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose3" name="choose" >
+                        <label for="choose3"> </label>
+                        <input type="text" class="name" id="name3" placeholder="имя">
+                        <label for="name3">-</label>
+                        <input type="number" class="timer_min" id="min3" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec3">:</label>
+                        <input type="number" class="timer_sec" id="sec3" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose4" name="choose" >
+                        <label for="choose4"> </label>
+                        <input type="text" class="name" id="name4" placeholder="имя">
+                        <label for="name4">-</label>
+                        <input type="number" class="timer_min" id="min4" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec4">:</label>
+                        <input type="number" class="timer_sec" id="sec4" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose5" name="choose" >
+                        <label for="choose5"> </label>
+                        <input type="text" class="name" id="name5" placeholder="имя">
+                        <label for="name5">-</label>
+                        <input type="number" class="timer_min" id="min5" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec5">:</label>
+                        <input type="number" class="timer_sec" id="sec5" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose6" name="choose" >
+                        <label for="choose6"> </label>
+                        <input type="text" class="name" id="name6" placeholder="имя">
+                        <label for="name6">-</label>
+                        <input type="number" class="timer_min" id="min6" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec6">:</label>
+                        <input type="number" class="timer_sec" id="sec6" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose7" name="choose" >
+                        <label for="choose7"> </label>
+                        <input type="text" class="name" id="name7" placeholder="имя">
+                        <label for="name7">-</label>
+                        <input type="number" class="timer_min" id="min7" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec7">:</label>
+                        <input type="number" class="timer_sec" id="sec7" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose8" name="choose" >
+                        <label for="choose8"> </label>
+                        <input type="text" class="name" id="name8" placeholder="имя">
+                        <label for="name8">-</label>
+                        <input type="number" class="timer_min" id="min8" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec8">:</label>
+                        <input type="number" class="timer_sec" id="sec8" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose9" name="choose" >
+                        <label for="choose9"> </label>
+                        <input type="text" class="name" id="name9" placeholder="имя">
+                        <label for="name9">-</label>
+                        <input type="number" class="timer_min" id="min9" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec9">:</label>
+                        <input type="number" class="timer_sec" id="sec9" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="set_box">
+                        <input type="radio" class="chosen" id="choose10" name="choose" >
+                        <label for="choose10"> </label>
+                        <input type="text" class="name" id="name10" placeholder="имя">
+                        <label for="name10">-</label>
+                        <input type="number" class="timer_min" id="min10" min="0" max="3" step="1" placeholder="минут">
+                        <label for="sec10">:</label>
+                        <input type="number" class="timer_sec" id="sec10" min="0" max="59" step="1" placeholder="секунд">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="box">
+            <div class="timer_box">
+                <div class="chosen_timer info_text">нет таймера</div>
+                <div class="time_left info_text">--:--</div>
+            </div>
+            <div class="monkey">
+                <div class="error">
+                    ОШИБКА!
+                </div>
+                <div class="voltage_bar">
+                    <div class="voltage"></div>
+                </div>
+            </div>
+            <div class="state info_text">СТАТУС: <span id="state">ПОДКЛЮЧИТЕ</span></div>
+            <div class="button_wrapper">
+                <button class="button button_off">
+                    <div class="button_text"></div>
+                </button>
+                <button class="button_turn_off button_inactive">
+                    <div class="off_button_text">СБРОС</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+
+</body>
+</html>

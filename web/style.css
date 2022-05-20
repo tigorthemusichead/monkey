@@ -1,0 +1,223 @@
+body{
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.cover{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: all 1000;
+}
+.working-cover{
+    background: #99e29ed7;
+    visibility: hidden;
+}
+.not_found-cover{
+    background: #e9d2d2d7;
+}
+.main{
+    display: flex;
+}
+h1{
+    display: inline-block;
+    font-size: 80px;
+    text-align: center;
+}
+.menu{
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    left: 0;
+    background: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.menu > div{
+    height: 20px;
+    width: 150px;
+    background: #ffffff;
+    transition: all 0.1s;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    color: #cdcdcd;
+    border-bottom: solid #cdcdcd 10px;
+}
+
+.box{
+    width: 100vw;
+    height: calc(100vh - 210px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+.monkey{
+    width: 100vw;
+    height: calc(50vh - 210px);
+    background: url("img/monkey.png") no-repeat center;
+    display: flex;
+    position: relative;
+    justify-content: flex-end;
+}
+.error{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #be3636;
+    font-size: 60px;
+    border: solid 5px #be3636;
+    border-radius: 20px;
+    padding: 20px;
+    display: none;
+}
+.voltage_bar{
+    width: 100px;
+    height: 100%;
+    background-color: #cdcdcd;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.voltage{
+    width: 50px;
+    /*height: 70%;*/
+    background-color: #572c2c;
+    margin: 0 auto;
+    transition: all 1s;
+}
+.timer_box{
+    width: 100vw;
+    height: 200px;
+    display: flex;
+    border-bottom: #cdcdcd solid 10px;
+}
+.chosen_timer{
+    width:60%;
+    height: 100%;
+}
+.time_left{
+    width:50%;
+    height: 100%;
+}
+.info_text{
+    font-size: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.state{
+    height: 200px;
+    width: 100vw;
+    border-top: #cdcdcd solid 10px;
+    border-bottom: #cdcdcd solid 10px;
+}
+.button_wrapper{
+    height: calc(50vh - 310px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.off_button_text{
+    line-height: 150px;
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.button_text{
+    line-height: 200px;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.button{
+    height: 200px;
+    width: 200px;
+    background: #757575;
+    border: solid 5px #cdcdcd;
+    border-radius: 50%;
+}
+.button_turn_off{
+    height: 150px;
+    width: 150px;
+    position: absolute;
+    bottom: calc(25vh - 245px);
+    left: 20vw;
+    background: #572c2c;
+    border: solid 5px #572c2c;
+    border-radius: 50%;
+}
+.button_inactive{
+    background: none!important;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.button_off{
+
+}
+.button_on{
+    /*background: #572c2c;
+    border-radius: 50%;*/
+}
+/* menu */
+
+.menu_box{
+    width: 0vw;
+    overflow: hidden;
+}
+.timer_list{
+    list-style: none;
+    width: 100%;
+    height: calc(100% - 260px);
+    min-height: 1400px;
+}
+.no_timer_wrapper{
+    display: flex;
+    align-items: center;
+    color: #cdcdcd;
+}
+#choose0{
+    margin-right: 36px;
+}
+.set_box{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item{
+    height: calc((100vh - 410px)/10);
+}
+.name{
+    width: 58%;
+    font-size: 60px;
+    
+}
+.timer_min{
+    width: 8%;
+    font-size: 60px;
+}
+.timer_sec{
+    width: 8%;
+    font-size: 60px;
+    margin-right: 40px;
+}
+input[type=radio] {
+    display: block;
+    -ms-transform: scale(4);
+    -webkit-transform: scale(4);
+    transform: scale(4);
+}
