@@ -1,17 +1,6 @@
 #pragma once
-#include <string>
-#include <fstream>
 
-ifstream index("web/index.html");
-string line_string;
-string text_string;
-
-while (getline (index, line_string))
-{
-  text_string += line_string;
-}
-
-char text = "=====(<!doctype html>
+char web[] = R"=====(<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,5 +21,3 @@ kek.addEventListener('click', ()=>{
     <script src="script.js"></script>
 </body>
 </html>)=====";
-
-char web[] = R text;
