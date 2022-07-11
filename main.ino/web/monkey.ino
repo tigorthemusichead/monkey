@@ -18,6 +18,5 @@ char web[] = R"=====(<!doctype html>
 kek.addEventListener('click', ()=>{
     alert(1);
 })</script>
-    <script src="script.js"></script>
 </body>
 </html>)=====";
