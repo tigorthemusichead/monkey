@@ -1,6 +1,7 @@
 #!/bin/bash
 
 python .build.py
+git checkout auto-develop
 git add .
 echo "Enter commit's name"
 read commit_name 
