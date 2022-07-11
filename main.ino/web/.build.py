@@ -29,8 +29,6 @@ end_position = ino_text.find(")=====")
 
 ino_text = ino_text[:start_position] + html_text + ino_text[end_position:]
 
-print(ino_text)
-
 result = open("../web.hpp", "w")
 result.write(ino_text)
 result.close()
