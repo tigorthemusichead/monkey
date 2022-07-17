@@ -9,9 +9,110 @@
     <title>Document</title>
 </head>
 <body>
-    <button class="kek">
-        lol
-    </button>
+    <header>
+        <div class="header-box">
+            Таймер 12345678910
+        </div>
+    </header>
+    <main>
+        <div class="cancel-wrapper">
+            <div class="error">Ошибка!</div>
+            <div class="cancel">Отмена</div>
+        </div>
+        <div class="panel">
+            <div class="state-box">
+                <div class="time">
+                    06:45
+                </div>
+                <div class="status">
+                    Работает
+                </div>
+            </div>
+            <div class="voltage-wrapper">
+                <div class="voltage"></div>
+            </div>
+        </div>
+        <div class="button">
+            Выключить
+        </div>
+        <div class="timer-wrapper">
+            <div class="timer-button-wrapper">
+                <svg display="inherit" class="open-timers" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.4142 0.585788C15.6332 -0.19526 14.3668 -0.19526 13.5858 0.585788L0.857864 13.3137C0.0768158 14.0948 0.0768158 15.3611 0.857864 16.1421C1.63891 16.9232 2.90524 16.9232 3.68629 16.1421L15 4.82843L26.3137 16.1421C27.0948 16.9232 28.3611 16.9232 29.1421 16.1421C29.9232 15.3611 29.9232 14.0948 29.1421 13.3137L16.4142 0.585788ZM17 29L17 2H13L13 29H17Z" fill="#F4F1F4"/>
+                </svg>
+                <svg display="none" class="close-timers" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.5858 28.4142C14.3668 29.1953 15.6332 29.1953 16.4142 28.4142L29.1421 15.6863C29.9232 14.9052 29.9232 13.6389 29.1421 12.8579C28.3611 12.0768 27.0948 12.0768 26.3137 12.8579L15 24.1716L3.68629 12.8579C2.90524 12.0768 1.63891 12.0768 0.857864 12.8579C0.0768158 13.6389 0.0768158 14.9052 0.857864 15.6863L13.5858 28.4142ZM13 0L13 27H17L17 0L13 0Z" fill="#F4F1F4"/>
+                </svg>
+
+            </div>
+            <div class="timer-box">
+                <form id="0" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="1" class="timer">
+                    <div class="checkbox checkbox-active"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="2" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="3" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="4" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="5" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="6" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="7" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="8" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+                <form id="9" class="timer">
+                    <div class="checkbox"></div>
+                    <input name="name" class="timer-name"/>
+                    <input name="min" type="number" min="0" max="9" class="timer-min"/>
+                    <input name="sec" type="number" min="0" max="59" class="timer-sec"/>
+                </form>
+            </div>
+            <div class="timer-actions">
+                <div class="no-timer">Без Таймера</div>
+                <div class="erase">Сбросить</div>
+            </div>
+        </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
