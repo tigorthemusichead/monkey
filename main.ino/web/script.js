@@ -36,8 +36,9 @@ timerCheckboxes.forEach((checkbox, index) => {
     })
 });
 
-window.onload = ()=>{
-    const elem = document.documentElement;
-    if (elem.requestFullscreen)
-        elem.requestFullscreen()
-}
+window.addEventListener("load",function() {
+    setTimeout(function(){
+        // This hides the address bar:
+        window.scrollTo(0, 1);
+    }, 0);
+});
