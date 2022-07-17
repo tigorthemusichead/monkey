@@ -10,11 +10,11 @@ const timerCheckboxes = document.querySelectorAll('.checkbox');
 
 let touchStartY = 0;
 
-timerMenuButton.addEventListener('touchstart', (e)=>{
+timerWrapper.addEventListener('touchstart', (e)=>{
     touchStartY = e.changedTouches[0].screenY
 })
 
-timerMenuButton.addEventListener('touchend', (e)=>{
+timerWrapper.addEventListener('touchend', (e)=>{
     if(e.changedTouches[0].screenY > touchStartY){
         timerMenuButtonOpen.style.display = 'inherit';
         timerMenuButtonCLose.style.display = 'none';
@@ -35,3 +35,9 @@ timerCheckboxes.forEach((checkbox, index) => {
         checkbox.classList.add('checkbox-active');
     })
 });
+
+window.onload = ()=>{
+    const elem = document.documentElement;
+    if (elem.requestFullscreen)
+        elem.requestFullscreen()
+}
