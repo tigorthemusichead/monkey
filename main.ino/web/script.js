@@ -49,11 +49,13 @@ timerForms.forEach((form, index) => {
     form.addEventListener('change', ()=>{
         timers.info[index] = {
             name: form.name.value,
-            min: form.min.value,
-            sec: form.sec.value
+            min: form.min.value < 10 ? form.min.value : 9,
+            sec: form.sec.value < 60 ? form.sec.value : 59
         }
+        setTimerForms();
         if(index === timers.activeIndex)
             setTimerInfo(index);
+        localStorage.setItem('MART-timers', JSON.stringify(timers));
     })
 })
 
@@ -68,12 +70,18 @@ eraseTimersButton.addEventListener('click', ()=>{
     timers.activeIndex = null;
     setTimerInfo(10);
     timers.info.forEach((timer, index) => {
-        if(index < 10) timer = {name: null, min: null, sec: null};
+        if(index < 10) timers.info[index] = {name: null, min: null, sec: null};
     })
-    timerForms.forEach(form => {
-        form.name.value = form.min.value = form.sec.value = null;
-    })
+    localStorage.setItem('MART-timers', timers);
+    setTimerForms();
 })
+
+window.onload = ()=>{
+    if(localStorage.getItem('MART-timers')){
+        timers = JSON.parse(localStorage.getItem('MART-timers'));
+    }
+    setTimerForms();
+}
 
 let timers = {
     activeIndex: null,
@@ -95,12 +103,20 @@ let timers = {
 function timeUtil(min, sec){
     if (!min && !sec)
         return '--:--';
-    min = `0${min}`;
-    sec = sec < 10 ? `0${sec}` : `${sec}`;
+    min = min ? `0${min}` : '00';
+    sec = sec < 10 ? sec > 0 ? `0${sec}` : '00' : `${sec}`;
     return min + ':' + sec;
 }
 
 function setTimerInfo(index){
     headerInfo.innerHTML = timers.info[index].name || "Безымянный таймер";
     time.innerHTML = timeUtil(timers.info[index].min, timers.info[index].sec);
+}
+
+function setTimerForms(){
+    timerForms.forEach((form, index)=>{
+        form.name.value = timers.info[index].name;
+        form.min.value = timers.info[index].min;
+        form.sec.value = timers.info[index].sec;
+    })
 }
