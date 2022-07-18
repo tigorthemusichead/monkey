@@ -220,13 +220,15 @@ function getState(){
     let err = true;
     try {
         request.onreadystatechange = () => {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 err = false;
                 const response = JSON.parse(request.response.text);
                 state = response.state;
                 voltage = response.voltage;
-            } else
+            } else{
                 setError("Потеряна связь с прибором!");
+            }
+
         }
     }
     finally{
