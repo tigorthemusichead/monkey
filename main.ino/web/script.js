@@ -219,16 +219,13 @@ function getState(){
     request.send();
     let err = true;
     try {
-        request.onreadystatechange = () => {
+        request.onload = () => {
             if (this.readyState === 4 && this.status === 200) {
                 err = false;
                 const response = JSON.parse(request.response.text);
                 state = response.state;
                 voltage = response.voltage;
-            } else{
-                setError("Потеряна связь с прибором!");
             }
-
         }
     }
     finally{
