@@ -223,8 +223,8 @@ function getState(){
             if (this.readyState === 4 && this.status === 200) {
                 err = false;
                 const response = JSON.parse(request.response.text);
-                state = response.state;
-                voltage = response.voltage;
+                state = +response.state;
+                voltage = +response.voltage;
             }
         }
     }
