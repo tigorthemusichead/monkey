@@ -8,12 +8,50 @@ const time = document.querySelector('.time');
 const timerForms = document.querySelectorAll('.timer');
 const noTimerButton = document.querySelector('.no-timer');
 const eraseTimersButton = document.querySelector('.erase');
+const error = document.querySelector('.error');
+const errorText = document.querySelector('.error-text');
+const button =  document.querySelector('.button');
+const statusText = document.querySelector('.status');
+const cancelButton = document.querySelector('.cancel');
+
+const licenceText = `Соглашение по использованию
+Приложение предназначено исключительно для совместного использования с оборудованием серии МАРТ, которое имеет такую возможность. 
+Совместное использование не изменяет основных характеристик оборудования и не предоставляет материальной выгоды.
+Никакие действия или бездействия приложения не могут быть истолкованы как основания по причинению, какого либо, вреда.
+Приложение предоставляется по принципу «как есть».  Для ознакомления возможностей приложения отводится десять часов совместного использования с оборудованием или месяц после установки.
+Дальнейшее использование приложения подтверждает, что оно полностью отвечает вашим ожиданиям и удовлетворяет вашим потребностям.
+Не допускается вносить любые изменения в приложение, разбирать его код. Нарушение этого пункта приведет к немедленному расторжению соглашения.`
+
+const statuses = ['Нет Связи', 'Готов', 'Поверните ключ', 'Включите', 'Работает', 'Пауза'];
+const buttons = [null, 'Взять Управление', null, 'Включить', 'Выключить', null];
+const voltageColors = ['#A2E5A9', '#E5DAA2', '#DD6969'];
+
+let timers = {
+    activeIndex: null,
+    info: [
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: null, min: null, sec: null},
+        {name: 'Без Таймера', min: null, sec: null}
+    ]
+}
+
+let state = 0;
+let voltage = 0;
 
 /**
  * UX/UI Code
  */
 
 let touchStartY = 0;
+let errorTimeout = setInterval(()=>{}, 0);
 
 timerWrapper.addEventListener('touchstart', (e)=>{
     touchStartY = e.changedTouches[0].screenY
@@ -76,28 +114,60 @@ eraseTimersButton.addEventListener('click', ()=>{
     setTimerForms();
 })
 
+error.addEventListener('click', ()=>{
+    error.classList.toggle('error-active');
+})
+
+button.addEventListener('click', ()=>{
+    let address = null;
+    switch(state){
+        case 1:
+            address += '/manage-on';
+            break;
+        case 3:
+            if(timers.activeIndex !== null)
+                address += `/manage-off?time=${msUtil(timers.info[timers.activeIndex])}`;
+            else
+                address += '/manage-off';
+            break;
+        case 4:
+            address += '/cancel';
+            break;
+        default:
+            address = null;
+            break;
+    }
+    if(address){
+        const request = new XMLHttpRequest();
+        request.open("GET", address, false);
+        request.send();
+        request.onreadystatechange = () => {
+            if(this.readyState == 4 && this.status == 200){
+                console.log(request.response);
+            }
+        }
+    }
+    getState();
+})
+
+cancelButton.addEventListener('click', ()=>{
+    const request = new XMLHttpRequest();
+    request.open("GET", '/cancel', false);
+    request.send();
+    request.onreadystatechange = () => {
+        if(this.readyState == 4 && this.status == 200){
+            console.log(request.response);
+        }
+    }
+    getState();
+});
+
 window.onload = ()=>{
     if(localStorage.getItem('MART-timers')){
         timers = JSON.parse(localStorage.getItem('MART-timers'));
     }
     setTimerForms();
-}
-
-let timers = {
-    activeIndex: null,
-    info: [
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: null, min: null, sec: null},
-        {name: 'Без Таймера', min: null, sec: null}
-    ]
+    setInterval(getState, 2000);
 }
 
 function timeUtil(min, sec){
@@ -106,6 +176,10 @@ function timeUtil(min, sec){
     min = min ? `0${min}` : '00';
     sec = sec < 10 ? sec > 0 ? `0${sec}` : '00' : `${sec}`;
     return min + ':' + sec;
+}
+
+function msUtil({min, sec}){
+    return min * 60000 + sec * 1000;
 }
 
 function setTimerInfo(index){
@@ -119,4 +193,48 @@ function setTimerForms(){
         form.min.value = timers.info[index].min;
         form.sec.value = timers.info[index].sec;
     })
+}
+
+function setStatus(){
+    statusText.innerText = statuses[state];
+    button.innerHTML = buttons[state];
+    if(state in [0, 2, 5, -1]) button.style.display = 'none';
+    else button.style.display = 'inherit';
+}
+
+function setError(errorMessage){
+    error.style.display = 'inherit';
+    errorText.innerHTML = errorMessage;
+    clearTimeout(errorTimeout);
+    errorTimeout = setTimeout(()=>{
+        error.style.display = 'none';
+        errorText.innerHTML = null;
+
+    }, 20000);
+}
+
+function getState(){
+    const request = new XMLHttpRequest();
+    request.open('GET', '/state', false);
+    request.send();
+    let err = true;
+    try {
+        request.onreadystatechange = () => {
+            if (this.readyState == 4 && this.status == 200) {
+                err = false;
+                const response = JSON.parse(request.response.text);
+                state = response.state;
+                voltage = response.voltage;
+            } else
+                setError("Потеряна связь с прибором!");
+        }
+    }
+    finally{
+        if(err){
+            setError("Потеряна связь с прибором!");
+            state = 0;
+            voltage = 0;
+        }
+        setStatus();
+    }
 }

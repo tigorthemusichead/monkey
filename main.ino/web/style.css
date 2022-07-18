@@ -53,6 +53,17 @@ header{
     line-height: 47px;
     text-align: center;
     border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s;
+    display: none
+}
+
+.error-active{
+    top: 114px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 194px);
+    z-index: 10;
 }
 
 .cancel{
@@ -67,7 +78,6 @@ header{
     line-height: 47px;
     text-align: center;
     border-radius: 10px;
-    cursor: pointer
 }
 
 .panel{
@@ -137,7 +147,6 @@ header{
     color: #FFFFFF;
     text-align: center;
     line-height: 120px;
-    cursor: pointer
 }
 
 .timer-wrapper{
