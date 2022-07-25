@@ -198,7 +198,7 @@ function setTimerForms(){
 function setStatus(){
     statusText.innerText = statuses[state];
     button.innerHTML = buttons[state];
-    if(state in [0, 2, 5, -1]) button.style.display = 'none';
+    if([0, 2, 5, -1].includes(state)) button.style.display = 'none';
     else button.style.display = 'inherit';
 }
 
@@ -214,22 +214,29 @@ function setError(errorMessage){
 }
 
 function getState(){
-    const request = new XMLHttpRequest();
-    request.open('GET', 'http://192.168.4.1/state', false);
-    request.onload = () => {
-        if (request.readyState === 4 && request.status === 200) {
-            err = false;
-            const response = JSON.parse(request.response.text);
-            state = +response.state;
-            voltage = +response.voltage;
+    try {
+        const request = new XMLHttpRequest();
+        request.open('GET', 'http://192.168.4.1/state', false);
+        request.onloadend = () => {
+            if (request.readyState === 4 && request.status === 200) {
+                err = false;
+                const response = JSON.parse(request.response);
+                state = +response.state;
+                voltage = +response.voltage;
+            } else {
+                setError("Потеряна связь с прибором!");
+                state = 0;
+                voltage = 0;
+            }
+            setStatus();
         }
-        else {
-            setError("Потеряна связь с прибором!");
-            state = 0;
-            voltage = 0;
-        }
+        request.send();
+    }
+    catch(err){
+        setError("Потеряна связь с прибором!");
+        state = 0;
+        voltage = 0;
         setStatus();
     }
 
-    request.send();
 }
