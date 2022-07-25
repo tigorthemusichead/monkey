@@ -216,24 +216,20 @@ function setError(errorMessage){
 function getState(){
     const request = new XMLHttpRequest();
     request.open('GET', 'http://192.168.4.1/state', false);
-    let err = true;
-    try {
-        request.onload = () => {
-            if (request.readyState === 4 && request.status === 200) {
-                err = false;
-                const response = JSON.parse(request.response.text);
-                state = +response.state;
-                voltage = +response.voltage;
-            }
+    request.onload = () => {
+        if (request.readyState === 4 && request.status === 200) {
+            err = false;
+            const response = JSON.parse(request.response.text);
+            state = +response.state;
+            voltage = +response.voltage;
         }
-    }
-    finally{
-        if(err){
+        else {
             setError("Потеряна связь с прибором!");
             state = 0;
             voltage = 0;
         }
         setStatus();
     }
+
     request.send();
 }
