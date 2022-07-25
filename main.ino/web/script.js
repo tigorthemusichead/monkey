@@ -119,7 +119,7 @@ error.addEventListener('click', ()=>{
 })
 
 button.addEventListener('click', ()=>{
-    let address = null;
+    let address = 'http://192.168.4.1';
     switch(state){
         case 1:
             address += '/manage-on';
@@ -140,25 +140,25 @@ button.addEventListener('click', ()=>{
     if(address){
         const request = new XMLHttpRequest();
         request.open("GET", address, false);
-        request.send();
-        request.onreadystatechange = () => {
-            if(this.readyState == 4 && this.status == 200){
+        request.onload = () => {
+            if(request.readyState == 4 && request.status == 200){
                 console.log(request.response);
             }
         }
+        request.send();
     }
     getState();
 })
 
 cancelButton.addEventListener('click', ()=>{
     const request = new XMLHttpRequest();
-    request.open("GET", '/cancel', false);
-    request.send();
+    request.open("GET", 'http://192.168.4.1/cancel', false);
     request.onreadystatechange = () => {
-        if(this.readyState == 4 && this.status == 200){
+        if(request.readyState === 4 && request.status === 200){
             console.log(request.response);
         }
     }
+    request.send();
     getState();
 });
 
@@ -215,12 +215,11 @@ function setError(errorMessage){
 
 function getState(){
     const request = new XMLHttpRequest();
-    request.open('GET', '/state', false);
-    request.send();
+    request.open('GET', 'http://192.168.4.1/state', false);
     let err = true;
     try {
         request.onload = () => {
-            if (this.readyState === 4 && this.status === 200) {
+            if (request.readyState === 4 && request.status === 200) {
                 err = false;
                 const response = JSON.parse(request.response.text);
                 state = +response.state;
@@ -236,4 +235,5 @@ function getState(){
         }
         setStatus();
     }
+    request.send();
 }
