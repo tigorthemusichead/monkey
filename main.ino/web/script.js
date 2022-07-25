@@ -214,29 +214,28 @@ function setError(errorMessage){
 }
 
 function getState(){
-    try {
-        const request = new XMLHttpRequest();
-        request.open('GET', 'http://192.168.4.1/state', false);
-        request.onloadend = () => {
-            if (request.readyState === 4 && request.status === 200) {
-                err = false;
-                const response = JSON.parse(request.response);
-                state = +response.state;
-                voltage = +response.voltage;
-            } else {
-                setError("Потеряна связь с прибором!");
-                state = 0;
-                voltage = 0;
-            }
-            setStatus();
+    const request = new XMLHttpRequest();
+    request.open('GET', 'http://192.168.4.1/state', false);
+
+    request.addEventListener('loadend',  () => {
+        if (request.readyState === 4 && request.status === 200) {
+            const response = JSON.parse(request.response);
+            state = +response.state;
+            voltage = +response.voltage;
+        } else {
+            setError("Потеряна связь с прибором!");
+            state = 0;
+            voltage = 0;
         }
-        request.send();
-    }
-    catch(err){
-        setError("Потеряна связь с прибором!");
+        setStatus();
+    })
+
+    request.addEventListener('error', (error) => {
+        setError(error + "\nОтвет не получен. Потеряна связь с прибором!");
         state = 0;
         voltage = 0;
         setStatus();
-    }
+    })
+    request.send();
 
 }
