@@ -22,6 +22,15 @@ const licenceText = `Соглашение по использованию
 Дальнейшее использование приложения подтверждает, что оно полностью отвечает вашим ожиданиям и удовлетворяет вашим потребностям.
 Не допускается вносить любые изменения в приложение, разбирать его код. Нарушение этого пункта приведет к немедленному расторжению соглашения.`
 
+const errorTexts = {
+    "cancel-error-default": "Текущий процесс не возможно отменить.",
+    "cancel-error-initial": "Прибор находится в изначальном состоянии,\n Отмена не возможна.\n Чтобы продолжить Возьмите внешнее управление\n или включите прибор вручную.",
+    "cancel-error-pause": "Прибор находится в состоянии ПАУЗА,\n Отмена не возможна \n Дождитесь конца паузы чтобы продолжить использовать прибор.",
+    "cancel-error-working": "При сбросе работы прибора возникла ошибка! \n Чтобы выключить прибор отключитесь от точки доступа.",
+    "cancel-error-manage-off": "При сбросе внешнего управления возникла ошибка! \n Чтобы выключить прибор отключитесь от точки доступа.",
+    "manage-error-key": "Не возможно взять внешнее управление, пока ключ находится в состоянии ВКЛ.\n Верните ключ в состояние ВЫКЛ чтобы продолжить!"
+}
+
 const statuses = ['Нет Связи', 'Готов', 'Поверните ключ', 'Включите', 'Работает', 'Пауза'];
 const buttons = [null, 'Взять Управление', null, 'Включить', 'Выключить', null];
 const voltageColors = ['#A2E5A9', '#E5DAA2', '#DD6969'];
@@ -141,8 +150,11 @@ button.addEventListener('click', ()=>{
         const request = new XMLHttpRequest();
         request.open("GET", address, false);
         request.onload = () => {
-            if(request.readyState == 4 && request.status == 200){
+            if(request.readyState === 4 && request.status === 200){
                 console.log(request.response);
+            }
+            else if(request.readyState === 4 && request.status === 500){
+                setError(errorTexts[request.response]);
             }
         }
         request.send();
@@ -156,6 +168,9 @@ cancelButton.addEventListener('click', ()=>{
     request.onreadystatechange = () => {
         if(request.readyState === 4 && request.status === 200){
             console.log(request.response);
+        }
+        else if(request.readyState === 4 && request.status === 500){
+            setError(errorTexts[request.response]);
         }
     }
     request.send();
