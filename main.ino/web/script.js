@@ -54,6 +54,7 @@ let timers = {
 
 let state = 0;
 let voltage = 0;
+let pauseTime = 0;
 
 /**
  * UX/UI Code
@@ -83,7 +84,7 @@ timerWrapper.addEventListener('touchend', (e)=>{
  * Timers logic
  */
 
-let timer;
+let timerID;
 //clearInterval(timer);
 
 timerCheckboxes.forEach((checkbox, index) => {
@@ -145,7 +146,7 @@ button.addEventListener('click', ()=>{
             if(timers.activeIndex !== null)
                 address += `/manage-off?time=${msUtil(timers.info[timers.activeIndex])}`;
             else
-                address += '/manage-off';
+                address += '/manage-off?time=600000';
             break;
         case 4:
             address += '/cancel';
@@ -161,10 +162,14 @@ button.addEventListener('click', ()=>{
             if(request.readyState === 4 && request.status === 200){
                 console.log(request.response);
                 if(state === 3 && timers.activeIndex >= 0){
-                    timer = setTimer(timers.info[timers.activeIndex].min, timers.info[timers.activeIndex].sec);
+                    setTimer(timers.info[timers.activeIndex].min, timers.info[timers.activeIndex].sec, 4, ()=>{
+                        setTimer(minSecUtil(pauseTime, 'min'), minSecUtil(pauseTime, 'sec'), 5, ()=>{
+                            clearInterval(timerID);
+                        })
+                    });
                 }
                 else if(state === 3 && timers.activeIndex === -1){
-                    timer = setTimer(10, 0);
+                    setTimer(10, 0, 4);
                 }
             }
             else if(request.readyState === 4 && request.status === 500){
@@ -211,6 +216,13 @@ function msUtil({min, sec}){
     return min * 60000 + sec * 1000;
 }
 
+function minSecUtil(time){
+    if(param === 'min')
+        return Math.floor(time / 60000);
+    else
+        return Math.floor((time / 1000) % 60);
+}
+
 function setTimerInfo(index){
     headerInfo.innerHTML = timers.info[index].name || "Безымянный таймер";
     time.innerHTML = timeUtil(timers.info[index].min, timers.info[index].sec);
@@ -242,27 +254,28 @@ function setError(errorMessage){
     }, 20000);
 }
 
-function setTimer(min, sec){
-    timer = setInterval(()=>{
-        if(sec === 0 && min !== 0){
+function setTimer(min, sec, normalState, action = ()=>{}){
+    timerID = setInterval(()=>{
+        if(sec > 0){
+            sec --;
+        }
+        else if(min > 0){
             sec = 59;
             min --;
         }
-        else if(sec > 0 ){
-            sec --;
+        else{
+            setTimerInfo(timers.activeIndex);
+            action();
+            //clearInterval(timerID);
+        }
+
+        if(state !== normalState){
+            setTimerInfo(timers.activeIndex);
+            action();
+            //clearInterval(timerID);
         }
 
         time.innerHTML = timeUtil(min, sec);
-
-        if(sec < 1 && min < 1) {
-            clearInterval(timer);
-            setTimerInfo(timers.activeIndex);
-        }
-
-        console.log(sec < 1);
-        console.log(min < 1);
-        console.log();
-
     }, 1000);
 }
 
@@ -275,10 +288,12 @@ function getState(){
             const response = JSON.parse(request.response);
             state = +response.state;
             voltage = +response.voltage;
+            pauseTime = +response.pausetime;
         } else {
             setError("Потеряна связь с прибором!");
             state = 0;
             voltage = 0;
+            pauseTime = 0;
         }
         setStatus();
     })
