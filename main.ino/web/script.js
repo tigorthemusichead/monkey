@@ -83,6 +83,9 @@ timerWrapper.addEventListener('touchend', (e)=>{
  * Timers logic
  */
 
+let timer;
+//clearInterval(timer);
+
 timerCheckboxes.forEach((checkbox, index) => {
     checkbox.addEventListener('click', ()=>{
         timerCheckboxes[timers.activeIndex]?.classList.remove('checkbox-active');
@@ -124,7 +127,12 @@ eraseTimersButton.addEventListener('click', ()=>{
 })
 
 error.addEventListener('click', ()=>{
-    error.classList.toggle('error-active');
+    if(error.classList[1] === 'error-active'){
+        error.classList.remove('error-active');
+        error.style.display = 'none';
+    }
+    else
+        error.classList.add('error-active');
 })
 
 button.addEventListener('click', ()=>{
@@ -152,6 +160,12 @@ button.addEventListener('click', ()=>{
         request.onload = () => {
             if(request.readyState === 4 && request.status === 200){
                 console.log(request.response);
+                if(state === 3 && timers.activeIndex >= 0){
+                    timer = setTimer(timers.info[timers.activeIndex].min, timers.info[timers.activeIndex].sec);
+                }
+                else if(state === 3 && timers.activeIndex === -1){
+                    timer = setTimer(10, 0);
+                }
             }
             else if(request.readyState === 4 && request.status === 500){
                 setError(errorTexts[request.response]);
@@ -228,6 +242,30 @@ function setError(errorMessage){
     }, 20000);
 }
 
+function setTimer(min, sec){
+    timer = setInterval(()=>{
+        if(sec === 0 && min !== 0){
+            sec = 59;
+            min --;
+        }
+        else if(sec > 0 ){
+            sec --;
+        }
+
+        time.innerHTML = timeUtil(min, sec);
+
+        if(sec < 1 && min < 1) {
+            clearInterval(timer);
+            setTimerInfo(timers.activeIndex);
+        }
+
+        console.log(sec < 1);
+        console.log(min < 1);
+        console.log();
+
+    }, 1000);
+}
+
 function getState(){
     const request = new XMLHttpRequest();
     request.open('GET', 'http://192.168.4.1/state', false);
@@ -252,5 +290,4 @@ function getState(){
         setStatus();
     })
     request.send();
-
 }
