@@ -163,13 +163,21 @@ button.addEventListener('click', ()=>{
                 console.log(request.response);
                 if(state === 3 && timers.activeIndex >= 0){
                     setTimer(timers.info[timers.activeIndex].min, timers.info[timers.activeIndex].sec, 4, ()=>{
+                            clearInterval(timerID)
                         setTimer(minSecUtil(pauseTime, 'min'), minSecUtil(pauseTime, 'sec'), 5, ()=>{
                             clearInterval(timerID);
-                        })
+                            setTimerInfo(timers.activeIndex);
+                        });
                     });
                 }
                 else if(state === 3 && timers.activeIndex === -1){
-                    setTimer(10, 0, 4);
+                    setTimer(10, 0, 4, ()=>{
+                        clearInterval(timerID)
+                        setTimer(minSecUtil(pauseTime, 'min'), minSecUtil(pauseTime, 'sec'), 5, ()=>{
+                            clearInterval(timerID);
+                            setTimerInfo(timers.activeIndex);
+                        });
+                    });
                 }
             }
             else if(request.readyState === 4 && request.status === 500){
@@ -216,7 +224,7 @@ function msUtil({min, sec}){
     return min * 60000 + sec * 1000;
 }
 
-function minSecUtil(time){
+function minSecUtil(time, param){
     if(param === 'min')
         return Math.floor(time / 60000);
     else
