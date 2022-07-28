@@ -13,6 +13,7 @@ const errorText = document.querySelector('.error-text');
 const button =  document.querySelector('.button');
 const statusText = document.querySelector('.status');
 const cancelButton = document.querySelector('.cancel');
+const voltageBar = document.querySelector('.voltage');
 
 const licenceText = `Соглашение по использованию
 Приложение предназначено исключительно для совместного использования с оборудованием серии МАРТ, которое имеет такую возможность. 
@@ -146,7 +147,7 @@ button.addEventListener('click', ()=>{
             if(timers.activeIndex !== null)
                 address += `/manage-off?time=${msUtil(timers.info[timers.activeIndex])}`;
             else
-                address += '/manage-off?time=600000';
+                address += '/manage-off';
             break;
         case 4:
             address += '/cancel';
@@ -163,10 +164,9 @@ button.addEventListener('click', ()=>{
                 console.log(request.response);
                 if(state === 3 && timers.activeIndex >= 0){
                     setTimer(timers.info[timers.activeIndex].min, timers.info[timers.activeIndex].sec, 4, ()=>{
-                            clearInterval(timerID)
+                            clearInterval(timerID);
                         setTimer(minSecUtil(pauseTime, 'min'), minSecUtil(pauseTime, 'sec'), 5, ()=>{
                             clearInterval(timerID);
-                            setTimerInfo(timers.activeIndex);
                         });
                     });
                 }
@@ -175,7 +175,6 @@ button.addEventListener('click', ()=>{
                         clearInterval(timerID)
                         setTimer(minSecUtil(pauseTime, 'min'), minSecUtil(pauseTime, 'sec'), 5, ()=>{
                             clearInterval(timerID);
-                            setTimerInfo(timers.activeIndex);
                         });
                     });
                 }
@@ -204,12 +203,12 @@ cancelButton.addEventListener('click', ()=>{
     getState();
 });
 
-window.onload = ()=>{
+window.onload = async ()=>{
     if(localStorage.getItem('MART-timers')){
         timers = JSON.parse(localStorage.getItem('MART-timers'));
     }
     setTimerForms();
-    setInterval(getState, 2000);
+    setInterval(await getState, 2000);
 }
 
 function timeUtil(min, sec){
@@ -247,8 +246,12 @@ function setTimerForms(){
 function setStatus(){
     statusText.innerText = statuses[state];
     button.innerHTML = buttons[state];
+    voltageBar.style.height = `${(voltage / 1500) * 100}%`;
+    const colorIndex = voltage < 900 ? voltage > 500 ? 0 : 1 : 2;
+    voltageBar.style.background = voltageColors[colorIndex];
     if([0, 2, 5, -1].includes(state)) button.style.display = 'none';
     else button.style.display = 'inherit';
+
 }
 
 function setError(errorMessage){
@@ -273,22 +276,42 @@ function setTimer(min, sec, normalState, action = ()=>{}){
         }
         else{
             setTimerInfo(timers.activeIndex);
-            action();
-            //clearInterval(timerID);
+            getState().then(action);
+            //setTimeout(action, 1000);
         }
 
         if(state !== normalState){
             setTimerInfo(timers.activeIndex);
-            action();
-            //clearInterval(timerID);
+            getState().then(action);
+            //setTimeout(action, 1000);
         }
 
         time.innerHTML = timeUtil(min, sec);
     }, 1000);
 }
 
-function getState(){
-    const request = new XMLHttpRequest();
+async function getState(){
+    return new Promise(function (resolve, reject) {
+        makeRequest('GET', 'http://192.168.4.1/state')
+            .then(response => JSON.parse(response))
+            .then((response) => {
+                console.log(response);
+                state = +response.state;
+                voltage = +response.voltage;
+                pauseTime = +response.pausetime;
+                setStatus();
+                resolve(true);
+            })
+            .catch((err)=>{
+                setError("Потеряна связь с прибором!");
+                state = 0;
+                voltage = 0;
+                pauseTime = 0;
+                setStatus();
+                resolve(false);
+            })
+    });
+    /*const request = new XMLHttpRequest();
     request.open('GET', 'http://192.168.4.1/state', false);
 
     request.addEventListener('loadend',  () => {
@@ -313,4 +336,30 @@ function getState(){
         setStatus();
     })
     request.send();
+
+     */
+}
+
+function makeRequest(method, url) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send();
+    });
 }
