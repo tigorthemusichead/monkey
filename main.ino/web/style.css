@@ -151,6 +151,7 @@ header{
     color: #FFFFFF;
     text-align: center;
     line-height: 120px;
+    display: none;
 }
 
 .timer-wrapper{
