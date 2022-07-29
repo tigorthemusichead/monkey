@@ -56,6 +56,7 @@ let timers = {
 let state = 0;
 let voltage = 0;
 let pauseTime = 0;
+let errorMessage = "";
 
 /**
  * UX/UI Code
@@ -251,14 +252,20 @@ function setTimerForms(){
 }
 
 function setStatus(){
-    statusText.innerText = statuses[state];
     button.innerHTML = buttons[state];
     voltageBar.style.height = `${(voltage / 1500) * 100}%`;
     const colorIndex = voltage < 900 ? voltage > 500 ? 0 : 1 : 2;
     voltageBar.style.background = voltageColors[colorIndex];
     if([0, 2, 5, -1, 6].includes(state)) button.style.display = 'none';
     else button.style.display = 'inherit';
-
+    if(errorMessage === "module-error"){
+        statusText.innerText = "Ошибка железа"
+        statusText.style.background = "#EA6A6A";
+    }
+    else{
+        statusText.innerText = statuses[state];
+        statusText.style.background = "#81AFF5";
+    }
 }
 
 function setError(errorMessage){
@@ -303,14 +310,22 @@ async function getState(){
             .then(response => JSON.parse(response))
             .then((response) => {
                 console.log(response);
-                if(state === 6 && +response.state === 5) {
+                if([6, 4].includes(state) && +response.state === 5) {
+                    clearInterval(timerID);
                     setTimer(minSecUtil(+response.pausetime, 'min'), minSecUtil(+response.pausetime, 'sec'), 5, () => {
                         clearInterval(timerID);
                     });
                 }
+
+                if(response.error === "hardware-stop" && errorMessage !== "hardware-stop"){
+                    setError(`Работа прибора была остановлена вручную или в результате ошибки.\n Время работы прибора - ${minSecUtil(+response.lasted-working, 'min')} минут ${minSecUtil(+response.lasted-working, 'sec')} секунд`);
+                }
+
                 state = +response.state;
                 voltage = +response.voltage;
                 pauseTime = +response.pausetime;
+                errorMessage = response.error;
+
                 setStatus();
                 resolve(true);
             })
