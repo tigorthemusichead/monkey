@@ -37,7 +37,7 @@ const buttons = [null, 'Взять Управление', null, 'Включит�
 const voltageColors = ['#A2E5A9', '#E5DAA2', '#DD6969'];
 
 let timers = {
-    activeIndex: null,
+    activeIndex: 10,
     info: [
         {name: null, min: null, sec: null},
         {name: null, min: null, sec: null},
@@ -215,6 +215,7 @@ window.onload = async ()=>{
         }
     }
     setTimerForms();
+    setStatus();
     setInterval(await getState, 2000);
 }
 
@@ -317,8 +318,11 @@ async function getState(){
                     });
                 }
 
+                if(state !== +response.state) setStatus();
+
                 if(response.error === "hardware-stop" && errorMessage !== "hardware-stop"){
-                    setError(`Работа прибора была остановлена вручную или в результате ошибки.\n Время работы прибора - ${minSecUtil(+response.lasted-working, 'min')} минут ${minSecUtil(+response.lasted-working, 'sec')} секунд`);
+                    setStatus();
+                    setError(`Работа прибора была остановлена вручную или в результате ошибки.\n Время работы прибора - ${minSecUtil(+response["lasted_working"], 'min')} минут ${minSecUtil(+response["lasted_working"], 'sec')} секунд`);
                 }
 
                 state = +response.state;
