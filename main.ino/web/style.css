@@ -168,6 +168,10 @@ header{
     transition: all 0.2s;
 }
 
+.timer-wrapper-open{
+    top: 14px!important;
+}
+
 .timer-button-wrapper{
     width: 52px;
     height: 52px;
@@ -280,5 +284,11 @@ header{
     }
     .timer-actions{
         margin-top: 5px;
+    }
+    .timer-button-wrapper{
+        margin-bottom: 50px
+    }
+    .timer-wrapper{
+        top: calc(100vh - 196px);
     }
 }

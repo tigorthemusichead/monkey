@@ -73,12 +73,14 @@ timerWrapper.addEventListener('touchend', (e)=>{
     if(e.changedTouches[0].screenY > touchStartY){
         timerMenuButtonOpen.style.display = 'inherit';
         timerMenuButtonCLose.style.display = 'none';
-        timerWrapper.style.top = 'calc(100vh - 170px)';
+        //timerWrapper.style.top = 'calc(100vh - 170px)';
+        timerWrapper.classList.remove('timer-wrapper-open');
     }
     else{
         timerMenuButtonOpen.style.display = 'none';
         timerMenuButtonCLose.style.display = 'inherit';
-        timerWrapper.style.top = '14px';
+        //timerWrapper.style.top = '14px';
+        timerWrapper.classList.add('timer-wrapper-open');
     }
 })
 
